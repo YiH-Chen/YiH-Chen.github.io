@@ -154,11 +154,19 @@
                         ●&nbsp;&nbsp;無狀態（Stateless）
                     </b>
                 </p>
+                <p class="lead mb-5">
+                    在REST的設計風格中，Server端不會儲存Client端的任何狀態。
+                    Client端到Server端的每個請求都必須包含理解請求所需的資訊，且不能利用Server端儲存的任何上下文。
+                    因此，狀態完全保留在Client端上。
+                </p>
 
                 <p class="lead">
                     <b>
                         ●&nbsp;&nbsp;快取（Cacheability）
                     </b>
+                </p>
+                <p class="lead mb-5">
+                    REST Web服務提供快取的功能。Client端和傳遞資訊的中介服務或裝置可以將回覆進行快取，用於改善Server端回應時間的程序。
                 </p>
 
                 <p class="lead">
@@ -166,16 +174,20 @@
                         ●&nbsp;&nbsp;分層系統（Layered&nbsp;System）
                     </b>
                 </p>
+                <p class="lead mb-5">
+                    可以將REST Web服務設計成若干層架構的Server端，每個層各司其職，例如A層提供安全性驗證的服務；B層負責處理業務邏輯...等。共同協助來自Client端的請求。
+                    Client端一般不會知道是否直連Server端，Client端可能會經手好幾個Server端授權的中介裝置或服務。
+                </p>
 
                 <p class="lead">
                     <b>
                         ●&nbsp;&nbsp;需求編碼（Code-On-Demand）
                     </b>
                 </p>
-
-
-
-
+                <p class="lead mb-5">
+                    一般來說，REST設計風格中的各個服務通常是通過JSON或是XML來進行互動的。
+                    但這也不是硬性規定，Server端可以將程式碼傳輸至Client端的方式，用於臨時擴充或客製化Client端功能。
+                </p>
             </div>
         </div>
 
