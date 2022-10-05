@@ -20,7 +20,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
                 <span class="d-block d-lg-none">Yi-Hong Chen</span>
-                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="https://yih-chen.github.io/images/Joe.jpg" alt="..." /></span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="https://yih-chen.github.io/images/learn.jpg" alt="..." /></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -160,7 +160,7 @@
 
                 <img src="https://yih-chen.github.io/images/rabbitmq-process.png" width="110%">
                 <p></p>
-                <p class="lead">
+                <p class="lead mb-5">
                     日常生活中不免會遇到需要進行郵寄信件或包裹等業務，需要使用郵寄服務的寄件者會帶著包裹或信件至郵局進行投遞。
                     此時，郵局內部的人員可能會根據寄件者留下的
                     <b>
@@ -168,6 +168,85 @@
                     </b>
                     （例如：收件地址位在中山區）將包裹或信件分派至該區域的郵局，最後透過分局將包裹或信件交付收件者。
                 </p>
+
+                <h3>
+                    <b>
+                        RabbitMQ運行的種類/模式
+                    </b>
+                </h3>
+
+                <h5>
+                    Simple模式
+                </h5>
+                <img src="https://yih-chen.github.io/images/r-direct.jpg" width="110%">
+                <p></p>
+                <p class="lead mb-5">
+                    這是RabbitMQ中最簡單的模式，Producer,Consumer,Queue都只有一個。透過Producer直接將message傳進Queue中，最後由Consumer接收Queue中的訊息。
+                </p>
+
+                <h5>
+                    Worker模式
+                </h5>
+                <img src="https://yih-chen.github.io/images/r-worker.jpg" width="110%">
+                <p></p>
+                <p class="lead">
+                    由於Queue遵循先進先出演算法（FIFO）的概念，當Producer發送訊息的速度大於Consumer處理(消化)的速度時，這時simple模式如果被使用在
+                    <b>
+                        有時間限制的應用
+                    </b>
+                    上，就可會因為等待時間過長而導致任務失敗。<br>
+                    相比Simple模式，Worker模式就能更有效的消化Queue中的訊息。Worker模式會有兩個以上的Consumer，同時從一個Queue中取出訊息，並且
+                    <b>
+                        兩者不會取出重複的訊息
+                    </b>
+                    。在默認情況下，RabbitMQ會以循環的方式，按照順序將訊息平均發送給每個Consumer。
+                </p>
+                <p class="lead mb-5">
+                    <b>
+                        以生活中的例子來說
+                    </b>
+                    ，就像是大賣場中的收銀台，此時只有一個櫃員提供結帳服務，當越來越多顧客在排隊等候結帳時，櫃員就需要花更多時間消化掉這些顧客，而顧客也需要花更久的時間進行等待。
+                    這時候賣場如果能夠加開多個櫃台提供結帳服務，就能夠更快速的處理這些顧客的結帳需求。
+                </p>
+
+                <h5>
+                    Publish/Subscribe模式
+                </h5>
+                <img src="https://yih-chen.github.io/images/r-publish-subscribe.jpg" width="110%">
+                <p></p>
+                <p class="lead mb-5">
+
+                </p>
+
+                <h5>
+                    Routing模式
+                </h5>
+                <img src="https://yih-chen.github.io/images/r-routing.jpg" width="110%">
+                <p></p>
+                <p class="lead mb-5">
+
+                </p>
+                <img src="https://yih-chen.github.io/images/r-routing2.jpg" width="110%">
+                <p></p>
+
+                <h5>
+                    Topics模式
+                </h5>
+                <img src="https://yih-chen.github.io/images/r-topics.jpg" width="110%">
+                <p></p>
+                <p class="lead mb-5">
+
+                </p>
+
+                <h5>
+                    RPC模式
+                </h5>
+                <img src="https://yih-chen.github.io/images/r-rpc.jpg" width="110%">
+                <p></p>
+                <p class="lead mb-5">
+
+                </p>
+
 
             </div>
 
