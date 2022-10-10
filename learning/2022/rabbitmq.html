@@ -142,7 +142,7 @@
                     <b>
                         4-4. fanout模式
                     </b>
-                    ，一次丟給全部負責的Queue。
+                    ，將訊息轉發給所有綁定到Exchange的Queue中。
                 </p>
                 <p class="lead">
                     <b>
@@ -214,8 +214,24 @@
                 </h5>
                 <img src="https://yih-chen.github.io/images/r-publish-subscribe.jpg" width="80%">
                 <p></p>
-                <p class="lead mb-5">
+                <p class="lead">
+                    與Work模式相比，多了交換機（Exchange）的機制，Producer會先將訊息交由交換機，再透過交換機將訊息傳送至指定的Queue中。
+                </p>
 
+                <p class="lead">
+                    交換機的模式承如先前介紹，包含了四種模式/類型（
+                    <b>
+                        direct, topic, headers, fanout
+                    </b>
+                    ）。<br>
+                    <b>
+                        Exchange只負責轉發訊息而不具有儲存的功能，所以如果沒有任何的Queue與Exchange綁定，那訊息會遺失。
+                    </b>
+                </p>
+
+                <p class="lead mb-5">
+                    比起前面所述的幾種模式，Publish/Subscribe模式類似於生活中的廣播/訂閱。在日常生活中，我們可能會訂閱一些Youtube頻道或新聞媒體等，
+                    當該頻道發出新影片時，有訂閱的人就會收到上片通知，反之，沒有訂閱的人就不會收到消息。
                 </p>
 
                 <h5>
@@ -224,10 +240,17 @@
                 <img src="https://yih-chen.github.io/images/r-routing.jpg" width="80%">
                 <p></p>
                 <p class="lead mb-5">
-
+                    routing模式同樣也使用到Exchange，當Producer要將訊息交由交換機轉發時，需要在訊息上帶入一把
+                    <b>
+                        RoutingKey
+                    </b>
+                    ，而Exchange會比對Queue的RoutingKey是否與訊息的RoutingKey一致，如果完全一致，交換機才會將訊息轉送至該Queue中。<br>
+                    此外，routing模式具有
+                    <b>
+                        多重綁定
+                    </b>
+                    的功能，也就是說同一把Key可以綁到n個Queue中，而非一對一綁定。
                 </p>
-                <img src="https://yih-chen.github.io/images/r-routing2.jpg" width="80%">
-                <p></p>
 
                 <h5>
                     Topics模式
@@ -235,7 +258,15 @@
                 <img src="https://yih-chen.github.io/images/r-topics.jpg" width="80%">
                 <p></p>
                 <p class="lead mb-5">
-
+                    Topics模式也是Routing模式的一種，只是它的RoutingKey是採用
+                    <b>
+                        萬用字元的方式
+                    </b>
+                    與Queue進行匹配。另外，這種模式下交換機可以用
+                    <b>
+                        模糊匹配的方式
+                    </b>
+                    匹配到對應的Queue，再由監聽該Queue的Consumer去消化裡面的訊息。
                 </p>
 
                 <h5>
@@ -243,14 +274,17 @@
                 </h5>
                 <img src="https://yih-chen.github.io/images/r-rpc.jpg" width="80%">
                 <p></p>
-                <p class="lead mb-5">
-
+                <p class="lead">
+                    就是透過Queue來實現遠端過程呼叫，Client端可以將定義好的訊息送至Queue中，再由Server端處理Queue中的訊息。
+                    Client端為了獲得Server端處理後的結果，Client端會在向Server發送請求時，同時發送一個回調佇列（Callback queue）的地址（reply_to），
+                    用於告訴Server端，當處理完時該送回何處。
                 </p>
 
-
+                <p class="lead mb-5">
+                    在RPC模式下，Client端也可以同時發送多個訊息請求Server端進行處理。當Server端處理完後，為了讓Client端可以識別出Server端給予的回應，
+                    Client端在發送請求時，會附帶一個獨有的Correlation id，如此一來，Client端在回調佇列中就可以根據Correlation id辨識出這個回應是來自哪一個請求。
+                </p>
             </div>
-
-
         </div>
 
 
