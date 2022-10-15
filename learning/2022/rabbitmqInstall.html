@@ -73,11 +73,11 @@
             <!-- About-->
                 <div class="resume-section-content" align="center">
                     <h2 class="mb-0">
-                        RabbitMQ基本概念
+                        RabbitMQ安裝
                         <span class="text-primary"></span>
                     </h2>
                     <div class="subheading mb-5">
-                        <span class="text-primary">2022-10-11</span>
+                        <span class="text-primary">2022-10-15</span>
                     </div>
                 </div>
 
@@ -92,198 +92,108 @@
                 <p></p>
                 <h3>
                     <b>
-                        基本概念
+                        安裝方式
                     </b>
                 </h3>
 
                 <p class="lead">
-                    RabbitMQ是一個開源的訊息代理軟體，其中包含了幾個重要的角色：
-                </p>
-                <p class="lead">
-                    <b>
-                        1.生產者（Producer）
-                    </b><br>
-                    即為訊息的產生者，會負責將訊息傳送至Queue中。
-                </p>
-                <p class="lead">
-                    <b>
-                        2.消費者（Consumer）
-                    </b><br>
-                    訊息的消費者，負責接收Queue中的訊息。
-                </p>
-                <p class="lead">
-                    <b>
-                        3.佇列（Queue）
-                    </b><br>
-                    負責存放訊息的空間，具有先進先出（FIFO）的概念。
-                </p>
-                <p class="lead">
-                    <b>
-                        4.交換機制（Exchange）
-                    </b><br>
-                    可以把Exchange當作路由器的概念，它可以決定Producer的訊息需要送往哪一個Queue。<br>
-                    主要有四種模式：<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <b>
-                        4-1. direct模式
-                    </b>
-                    ，可以直接將訊息丟給指定的Queue。<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <b>
-                        4-2. topic模式
-                    </b>
-                    ，主題的概念，透過Binding規則，將訊息傳送給指定的Queue。<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <b>
-                        4-3. header模式
-                    </b>
-                    ，藉由傳送資料的Header來指定訊息要送往的Queue。<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <b>
-                        4-4. fanout模式
-                    </b>
-                    ，將訊息轉發給所有綁定到Exchange的Queue中。
-                </p>
-                <p class="lead">
-                    <b>
-                        5.綁定（Binding）
-                    </b><br>
-                    搭配Exchange使用，可以讓Exchange綁定一些指定的Queue，從而知道Producer的訊息要送往何處。
-                </p>
-                <p class="lead">
-                    以下圖
-                    <b>
-                        郵寄的例子
-                    </b>
-                    來說明，或許會稍微貼切一些：
+                    需要先至RabbitMQ官網
+                    <a href="https://www.rabbitmq.com/install-windows.html">
+                        下載RabbitMQ
+                    </a>
+                    （以Windows為例）
                 </p>
 
-                <img src="https://yih-chen.github.io/images/rabbitmq-process.png" width="110%">
-                <p></p>
                 <p class="lead mb-5">
-                    日常生活中不免會遇到需要進行郵寄信件或包裹等業務，需要使用郵寄服務的寄件者會帶著包裹或信件至郵局進行投遞。
-                    此時，郵局內部的人員可能會根據寄件者留下的
-                    <b>
-                        收件地址
-                    </b>
-                    （例如：收件地址位在中山區）將包裹或信件分派至該區域的郵局，最後透過分局將包裹或信件交付收件者。
+                    RabbitMQ Server程式碼是使用Erlang編寫的，所以在安裝RabbitMQ的同時還須同時
+                    <a href="https://www.erlang.org/downloads">
+                        安裝Erlang
+                    </a><br>
+                    並選擇Windows版本進行安裝。
                 </p>
+
+                <img src="https://yih-chen.github.io/images/erlangInstall.jpg" width="110%">
+                <p></p>
+
+                <p class="lead">
+                    下載的
+                    <b>
+                        otp_win64_25.1.1.exe
+                    </b>
+                    只需一鍵next到底，需要記住安裝Erlang的路徑，因為需要在系統環境變數內新增Erlang的變數
+                </p>
+
+                <p class="lead">
+                    新增環境變數如下
+                </p>
+
+                <img src="https://yih-chen.github.io/images/erlangEnv.jpg" width="110%">
+                <p></p>
+
+                <p class="lead">
+                    最後開啟cmd，輸入指令
+                    <b>
+                        erl
+                    </b>
+                    來確認是否將Erlang成功安裝。
+                </p>
+
+                <img src="https://yih-chen.github.io/images/elrcheck.jpg" width="110%">
+                <p></p>
+
+                <p class="lead">
+                    先前下載的RabbitMQ，與Erlang地安裝方式雷同，安裝完成後，緊接著開啟cmd安裝RabbitMQ-Plugins。<br>
+                    先cd至RabbitMQ Server的sbin內，再輸入指令
+                    <b>
+                        rabbitmq-plugins enable rabbitmq_management
+                    </b>
+                    進行安裝。
+                </p>
+
+                <p class="lead mb-5">
+                    安裝完成後，可以嘗試輸入指令
+                    <b>
+                        rabbitmqctl status
+                    </b>
+                    如果出現下圖內容，代表安裝成功，且RabbitMQ Server已安裝成功。
+
+                </p>
+
+                <img src="https://yih-chen.github.io/images/rabbitmqstatus.jpg" width="110%">
+                <p></p>
 
                 <h3>
                     <b>
-                        RabbitMQ運行的種類/模式
+                        操作指令
                     </b>
                 </h3>
 
-                <h5>
-                    Simple模式
-                </h5>
-                <img src="https://yih-chen.github.io/images/r-direct.jpg" width="80%">
-                <p></p>
-                <p class="lead mb-5">
-                    這是RabbitMQ中最簡單的模式，Producer,Consumer,Queue都只有一個。透過Producer直接將message傳進Queue中，最後由Consumer接收Queue中的訊息。
+                <p class="lead">
+                    <b>
+                        查看狀態：
+                    </b>
+                    rabbitmqctl status<br>
                 </p>
 
-                <h5>
-                    Worker模式
-                </h5>
-                <img src="https://yih-chen.github.io/images/r-worker.jpg" width="80%">
-                <p></p>
-                <p class="lead">
-                    由於Queue遵循先進先出演算法（FIFO）的概念，當Producer發送訊息的速度大於Consumer處理(消化)的速度時，這時simple模式如果被使用在
-                    <b>
-                        有時間限制的應用
-                    </b>
-                    上，就可會因為等待時間過長而導致任務失敗。<br>
-                    相比Simple模式，Worker模式就能更有效的消化Queue中的訊息。Worker模式會有兩個以上的Consumer，同時從一個Queue中取出訊息，並且
-                    <b>
-                        兩者不會取出重複的訊息
-                    </b>
-                    。在默認情況下，RabbitMQ會以循環的方式，按照順序將訊息平均發送給每個Consumer。
-                </p>
-                <p class="lead mb-5">
-                    <b>
-                        以生活中的例子來說
-                    </b>
-                    ，就像是大賣場中的收銀台，此時只有一個櫃員提供結帳服務，當越來越多顧客在排隊等候結帳時，櫃員就需要花更多時間消化掉這些顧客，而顧客也需要花更久的時間進行等待。
-                    這時候賣場如果能夠加開多個櫃台提供結帳服務，就能夠更快速的處理這些顧客的結帳需求。
-                </p>
-
-                <h5>
-                    Publish/Subscribe模式
-                </h5>
-                <img src="https://yih-chen.github.io/images/r-publish-subscribe.jpg" width="80%">
-                <p></p>
-                <p class="lead">
-                    與Work模式相比，多了交換機（Exchange）的機制，Producer會先將訊息交由交換機，再透過交換機將訊息傳送至指定的Queue中。
-                </p>
 
                 <p class="lead">
-                    交換機的模式承如先前介紹，包含了四種模式/類型（
+                    RabbitMQ使用的port默認是5672，另外，RabbitMQ提供了一個Web管理介面，提供使用者瀏覽以及操作。其默認的port為15672，因此只要訪問
                     <b>
-                        direct, topic, headers, fanout
+                        http://localhost:15672
+                    </b>
+                    就會出現RabbitMQ的Web管理介面。（預設的Username和Password為
+                    <b>
+                        gurst
                     </b>
                     ）。<br>
-                    <b>
-                        Exchange只負責轉發訊息而不具有儲存的功能，所以如果沒有任何的Queue與Exchange綁定，那訊息會遺失。
-                    </b>
+
                 </p>
 
                 <p class="lead mb-5">
-                    比起前面所述的幾種模式，Publish/Subscribe模式類似於生活中的廣播/訂閱。在日常生活中，我們可能會訂閱一些Youtube頻道或新聞媒體等，
-                    當該頻道發出新影片時，有訂閱的人就會收到上片通知，反之，沒有訂閱的人就不會收到消息。
+
                 </p>
 
-                <h5>
-                    Routing模式
-                </h5>
-                <img src="https://yih-chen.github.io/images/r-routing.jpg" width="80%">
-                <p></p>
-                <p class="lead mb-5">
-                    routing模式同樣也使用到Exchange，當Producer要將訊息交由交換機轉發時，需要在訊息上帶入一把
-                    <b>
-                        RoutingKey
-                    </b>
-                    ，而Exchange會比對Queue的RoutingKey是否與訊息的RoutingKey一致，如果完全一致，交換機才會將訊息轉送至該Queue中。<br>
-                    此外，routing模式具有
-                    <b>
-                        多重綁定
-                    </b>
-                    的功能，也就是說同一把Key可以綁到n個Queue中，而非一對一綁定。
-                </p>
 
-                <h5>
-                    Topics模式
-                </h5>
-                <img src="https://yih-chen.github.io/images/r-topics.jpg" width="80%">
-                <p></p>
-                <p class="lead mb-5">
-                    Topics模式也是Routing模式的一種，只是它的RoutingKey是採用
-                    <b>
-                        萬用字元的方式
-                    </b>
-                    與Queue進行匹配。另外，這種模式下交換機可以用
-                    <b>
-                        模糊匹配的方式
-                    </b>
-                    匹配到對應的Queue，再由監聽該Queue的Consumer去消化裡面的訊息。
-                </p>
-
-                <h5>
-                    RPC模式
-                </h5>
-                <img src="https://yih-chen.github.io/images/r-rpc.jpg" width="80%">
-                <p></p>
-                <p class="lead">
-                    就是透過Queue來實現遠端過程呼叫，Client端可以將定義好的訊息送至Queue中，再由Server端處理Queue中的訊息。
-                    Client端為了獲得Server端處理後的結果，Client端會在向Server發送請求時，同時發送一個回調佇列（Callback queue）的地址（reply_to），
-                    用於告訴Server端，當處理完時該送回何處。
-                </p>
-
-                <p class="lead mb-5">
-                    在RPC模式下，Client端也可以同時發送多個訊息請求Server端進行處理。當Server端處理完後，為了讓Client端可以識別出Server端給予的回應，
-                    Client端在發送請求時，會附帶一個獨有的Correlation id，如此一來，Client端在回調佇列中就可以根據Correlation id辨識出這個回應是來自哪一個請求。
-                </p>
             </div>
         </div>
 
