@@ -112,7 +112,7 @@
                     並選擇Windows版本進行安裝。
                 </p>
 
-                <img src="https://yih-chen.github.io/images/erlangInstall.jpg" width="110%">
+                <img src="https://yih-chen.github.io/images/erlangInstall.jpg" width="90%">
                 <p></p>
 
                 <p class="lead">
@@ -159,7 +159,7 @@
 
                 </p>
 
-                <img src="https://yih-chen.github.io/images/rabbitmqstatus.jpg" width="110%">
+                <img src="https://yih-chen.github.io/images/rabbitmqstatus.jpg" width="90%">
                 <p></p>
 
                 <h3>
@@ -173,6 +173,22 @@
                         查看狀態：
                     </b>
                     rabbitmqctl status<br>
+                    <b>
+                        啟動RabbitMQ Server：
+                    </b>
+                    rabbitmqctl start_app<br>
+                    <b>
+                        關閉RabbitMQ Server：
+                    </b>
+                    rabbitmqctl stop<br>
+                    <b>
+                        查看綁定：
+                    </b>
+                    rabbitmqctl list_bindings<br>
+                    <b>
+                        查看exchange：
+                    </b>
+                    rabbitmqctl list_exchanges<br>
                 </p>
 
 
@@ -189,9 +205,23 @@
 
                 </p>
 
-                <p class="lead mb-5">
-
+                <p class="lead">
+                    成功登入後會進到Overview的頁面，在這裡可以查看Queue的整體狀況（是否有message送到Queue亦或是否有message被收走等。），如下圖所示。
                 </p>
+                <img src="https://yih-chen.github.io/images/rabbitmqOverview.jpg" width="110%">
+                <p></p>
+
+                <p class="lead">
+                    進入Exchange頁面可以用來查看目前已存在的Exchange，如下圖所示，也可以點擊其中的一個Exchange查看其詳細資訊。
+                </p>
+                <img src="https://yih-chen.github.io/images/rabbitmqExchanges.jpg" width="110%">
+                <p></p>
+
+                <p class="lead">
+                    Queue頁面資訊也是同理，可以查看存在的Queue知詳細資訊，如下圖所示。
+                </p>
+                <img src="https://yih-chen.github.io/images/rabbitmqQueue.jpg" width="110%">
+                <p></p>
 
 
             </div>
