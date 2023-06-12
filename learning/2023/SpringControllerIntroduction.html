@@ -175,16 +175,46 @@
 
         <p class="lead">
 
-            Step1.要想在程式內提供RESTful Web 服務，需先於類別上加入<b>@RestController</b>的註解。<br>
-            Step2.承如先前的介紹，我們可以在類別上加上<b>@RequestMapping</b>的註解。<br>
+            <b>
+                Step1.
+            </b>
+            要想在程式內提供RESTful Web 服務，需先於類別上加入
+            <b>
+                @RestController
+            </b>
+            的註解。<br>
+
+            <b>
+                Step2.
+            </b>
+            承如先前的介紹，我們可以在類別上加上
+            <b>
+                @RequestMapping
+            </b>
+            的註解。<br>
             假設在Application內存在多個Controller，且在不同的Controller下會有多個接收請求的方法，而有些方法可能都在處理類似的請求，
             在此情況下如果設定了同個路徑名稱，就會違反了該路徑在全局的唯一性。此時，如果在類別上添加@RequestMapping的註解並且給予不同的父路徑，
             就可以很好的解決此問題的發生。<br>
-            Step3.定義實作方法的名稱。<br>
-            Step4.定義方法的路徑以及可接受的請求方法，這邊實作GET方法。<br>
-            Step5.定義所接收的參數。<br>
-            Step6.當收到請求後，將透過業務邏輯層<b>@Server</b>針對請求的資料進行處理。<br>
-            Step7.最後返回業務邏輯層處理後的結果。<br>
+            <b>
+                Step3.
+            </b>
+            定義實作方法的名稱。<br>
+            <b>
+                Step4.
+            </b>
+            定義方法的路徑以及可接受的請求方法，這邊實作GET方法。<br>
+            <b>
+                Step5.
+            </b>
+            定義所接收的參數。<br>
+            <b>
+                Step6.
+            </b>
+            當收到請求後，將透過業務邏輯層<b>@Server</b>針對請求的資料進行處理。<br>
+            <b>
+                Step7.
+            </b>
+            最後返回業務邏輯層處理後的結果。<br>
             程式範例流程如下圖：<br>
         </p>
 
@@ -207,7 +237,11 @@
 
         <p class="lead mb-5">
 
-            如果想要透過POST將請求送到此API，<b>method</b>屬性內加入接受的請求方法。
+            如果想要透過POST將請求送到此API，
+            <b>
+                method
+            </b>
+            屬性內加入接受的請求方法。
 
         </p>
 
