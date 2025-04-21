@@ -150,5 +150,35 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+
+
+        <!-- Firebase SDKs -->
+        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging.js"></script>
+
+        <script>
+            const firebaseConfig = {
+                apiKey: "AIzaSyBiPyvQwqwRKtJNjQ_LE5zXbo8PVzKTaVw",
+                authDomain: "joechentestfcm0421.firebaseapp.com",
+                projectId: "joechentestfcm0421",
+                messagingSenderId: "26421742760",
+                appId: "1:26421742760:web:5162945a0532cc1433869d",
+            };
+
+            // 初始化 Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            // 取得 messaging 實例
+            const messaging = firebase.messaging();
+
+            // 要求通知權限 & 取得 token
+            messaging.requestPermission()
+                .then(() => messaging.getToken({ vapidKey: "你的 VAPID 公鑰" }))
+                .then(token => {
+                    console.log("取得 Token：", token);
+                    // 可以 POST 給你 Java 後端的 API
+                })
+                .catch(err => console.error("通知授權失敗", err));
+        </script>
     </body>
 </html>
