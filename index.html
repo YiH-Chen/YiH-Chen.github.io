@@ -203,6 +203,16 @@
             }
         </script>
 
+    <button onclick="copyToken()">複製 Token</button>
+    <script>
+        function copyToken() {
+            const tokenText = document.getElementById("token").innerText;
+            navigator.clipboard.writeText(tokenText)
+                .then(() => alert("Token 已複製"))
+                .catch(() => alert("複製失敗"));
+        }
+    </script>
+
 
     </body>
 </html>
