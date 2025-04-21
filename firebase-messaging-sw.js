@@ -3,10 +3,11 @@ importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging.js');
 
 firebase.initializeApp({
-    apiKey: "你的 API Key",
-    projectId: "xxx",
-    messagingSenderId: "xxx",
-    appId: "xxx"
+
+    apiKey: "AIzaSyBiPyvQwqwRKtJNjQ_LE5zXbo8PVzKTaVw",
+    projectId: "joechentestfcm0421",
+    messagingSenderId: "26421742760",
+    appId: "1:26421742760:web:5162945a0532cc1433869d",
 });
 
 const messaging = firebase.messaging();
