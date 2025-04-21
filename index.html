@@ -152,11 +152,10 @@
         <script src="js/scripts.js"></script>
 
 
-        <!-- Firebase SDKs -->
-        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging.js"></script>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+            import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging.js";
 
-        <script>
             const firebaseConfig = {
                 apiKey: "AIzaSyBiPyvQwqwRKtJNjQ_LE5zXbo8PVzKTaVw",
                 authDomain: "joechentestfcm0421.firebaseapp.com",
@@ -166,19 +165,41 @@
             };
 
             // 初始化 Firebase
-            firebase.initializeApp(firebaseConfig);
+            const app = initializeApp(firebaseConfig);
+            const messaging = getMessaging(app);
 
-            // 取得 messaging 實例
-            const messaging = firebase.messaging();
-
-            // 要求通知權限 & 取得 token
-            messaging.requestPermission()
-                .then(() => messaging.getToken({ vapidKey: "你的 VAPID 公鑰" }))
-                .then(token => {
-                    console.log("取得 Token：", token);
-                    // 可以 POST 給你 Java 後端的 API
+            // 啟用通知權限並取得 token
+            const vapidKey = "BIqTEucc1S-3RNuVaCuzoqHT8-24tbZVLNLFSM1tbWwfLJfujx0KFMfSQM-75EluZCy3hGegObUGizuHPdenB6g"; // 從 Firebase 控制台 > 雲端訊息 > 網頁推播金鑰取得
+            getToken(messaging, { vapidKey })
+                .then((currentToken) => {
+                    if (currentToken) {
+                        console.log("🎉 裝置 Token:", currentToken);
+                        // 你可以在這裡呼叫後端 API，把 token 傳回去儲存
+                    } else {
+                        console.warn("⚠️ 尚未授權通知權限，無法取得 Token");
+                    }
                 })
-                .catch(err => console.error("通知授權失敗", err));
+                .catch((err) => {
+                    console.error("❌ 取得 Token 發生錯誤:", err);
+                });
+
+            // 預覽推播通知（當瀏覽器開啟時）
+            onMessage(messaging, (payload) => {
+                console.log("📥 前景通知收到:", payload);
+                alert(`前景通知：${payload.notification.title} - ${payload.notification.body}`);
+            });
+
+            // 註冊背景通知用的 Service Worker
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("firebase-messaging-sw.js")
+                    .then((registration) => {
+                        console.log("✅ Service Worker 註冊成功", registration);
+                    }).catch((err) => {
+                    console.error("❌ Service Worker 註冊失敗:", err);
+                });
+            }
         </script>
+
+
     </body>
 </html>
