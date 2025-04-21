@@ -18,7 +18,7 @@
     <body id="page-top">
 
     <h2>你的裝置 Token 是：</h2>
-    <pre id="currentToken">載入中...</pre>
+    <pre id="token">載入中...</pre>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
@@ -177,6 +177,7 @@
                 .then((currentToken) => {
                     if (currentToken) {
                         console.log("🎉 裝置 Token:", currentToken);
+                        document.getElementById("token").innerText = currentToken;
                         alert("你的裝置 Token 是：\n" + currentToken);
                         // 你可以在這裡呼叫後端 API，把 token 傳回去儲存
                     } else {
@@ -208,7 +209,7 @@
     <button onclick="copyToken()">複製 Token</button>
     <script>
         function copyToken() {
-            const tokenText = document.getElementById("currentToken").innerText;
+            const tokenText = document.getElementById("token").innerText;
             navigator.clipboard.writeText(tokenText)
                 .then(() => alert("Token 已複製"))
                 .catch(() => alert("複製失敗"));
