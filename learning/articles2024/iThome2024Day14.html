@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day14 - Model中的業務邏輯 @Service(下)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-09-28</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+        <h5><b>實作範例</b></h5>
+        </p>
+
+        <p class="lead">
+            在
+            <a href="iThome2024Day12.html">Day12 - Controller下的Bean (下)</a>
+            時，我們實作了一支 API 用於取得 A、B兩個參數的最大公因數，但當時只介紹了 Controller 類別的流程。
+            今天，就來繼續探討該範例中的業務邏輯。
+        </p>
+
+        <p class="lead">
+        <h5><b>實作範例</b></h5>
+        </p>
+
+        <p class="lead">
+        <pre class="prettyprint lang-java">
+        <code>
+        @Service("ExampleService")
+        public class ExampleService {
+
+                /**
+             * 計算兩數的最大公因數
+             */
+            public int getHighestCommonFactor(int paramA, int paramB) {
+                logger.info("paramA = " + paramA + ", B = " + paramB);
+                while (paramB != 0) {
+                    int tmp = paramA % paramB;
+                    paramA = paramB;
+                    paramB = tmp;
+                }
+                return paramA;
+            }
+
+        }
+        </code>
+        </pre>
+        在這個範例中，ExampleService 這個類帶有
+        <code>
+            @Service
+        </code>
+        註解，就代表它是負責處理程式核心的業務邏輯。
+        </p>
+
+        <p>
+            目前在這個類別中只有一個方法，即 getHighestCommonFactor() 用用於計算兩個參數的最大公因數。
+            假設今天有個需求是需要一個計算兩數最小公倍數的 API，那麼我們就可以在此類別下擴充新的方法，讓該 API
+            呼叫該方法進行對應的數學運算。
+        </p>
+
+
+        <p>
+            新增方法後的類別如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @Service("ExampleService")
+        public class ExampleService {
+
+            /**
+             * 計算兩數的最大公因數
+             */
+            public int getHighestCommonFactor(int paramA, int paramB) {
+                logger.info("paramA = " + paramA + ", B = " + paramB);
+                while (paramB != 0) {
+                    int tmp = paramA % paramB;
+                    paramA = paramB;
+                    paramB = tmp;
+                }
+                return paramA;
+            }
+
+            /**
+             * 計算兩數的最小公倍數
+             */
+            public int getLeastCommonMultiple(int paramA, int paramB) {
+                logger.info("paramA = " + paramA + ", paramB = " + paramB);
+                int leastCommonMultiple = 0;
+                leastCommonMultiple = paramA * paramB / getHighestCommonFactor(paramA, paramB);
+
+                return leastCommonMultiple;
+                }
+
+        }
+        </code>
+        </pre>
+        </p>
+
+        <p>
+            單元測試的實作範例如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @SpringBootTest
+        @ExtendWith(MockitoExtension.class)
+        class DemoApplicationTests {
+
+           private static Loggerlogger= Logger.getLogger("DemoApplicationTests");
+
+           @InjectMocks
+           public ExampleService exampleService;
+
+           @Test
+           void highestCommonFactorCalculateTest(){
+
+                    assertEquals(5, exampleService.getHighestCommonFactor(10, 5));
+                    assertEquals(15, exampleService.getHighestCommonFactor(15, 25));
+
+           }
+
+           @Test
+           void leastCommonMultipleCalculateTest(){
+
+                    assertEquals(10, exampleService.getLeastCommonMultiple(10, 5));
+                    assertEquals(100, exampleService.getLeastCommonMultiple(15, 25));
+
+           }
+        }
+        </code>
+        </pre>
+        </p>
+
+        <p>
+            從上述的範例中可以看到，我們使用了
+            <code>
+                @InjectMocks
+            </code>
+            註解來測試 ExampleService 類別下的方法，代表我們將業務邏輯與框架中的其他層級分離了，從而實現業務邏輯的獨立測試。
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

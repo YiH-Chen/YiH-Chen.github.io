@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day29 - Spring Boot 整合 Redis(下)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-13</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            如果想要在 Spring Boot 中結合 Redis 進行應用，需要先進行一些基本配置：<br>
+            <br>
+        </p>
+
+        <p class="lead">
+            <b>
+                Step 1. 於 pom.xml 內加入 Redis 的依賴項目
+            </b><br>
+        <pre class="prettyprint lang-xml">
+        <code>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+            &lt;version&gt;&lt;!-- 請自行選擇適用版本 --&gt;&lt;/version&gt;
+        &lt;/dependency&gt;
+        </code>
+        </pre>
+        spring-boot-starter-data-redis 提供了對 Redis 的支援，故需要於 pom.xml 內加入此依賴項目，此套件提供了
+        RedisConnectionFactory實例用於建立和管理程式與Redis的連接、StringRedisTemplate、RedisTemplate
+        兩者皆是操作Redis的模組，提供了豐富的方法來執行 Redis 的操作，StringRedisTemplate 作為 RedisTemplate
+        的子類專門用來操作字串類型的資料。
+        </p>
+
+        <p class="lead">
+            <b>
+                Step 2. 於 application.properties 內設定 Redis 的連接方式
+            </b><br>
+        <pre class="prettyprint lang-java">
+        <code>
+        spring.redis.host = 127.0.0.1
+        spring.redis.port = 6379
+        spring.redis.password =
+        spring.redis.database = 1
+        </code>
+        </pre>
+        Redis 默認的通訊埠號為6379。Redis 的密碼預設為空。此外，Redis 預設提供了16個
+        DataBase，每個資料庫都是以數字命名(0-15)，且資料庫間是相互獨立的，如附圖所示。<br>
+        <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-1.jpg" width="80%"><br>
+        </p>
+
+        <p class="lead">
+        <h5>
+            <b>
+                實作範例
+            </b><br>
+            在完成上述步驟後，接下來會透過一個實作來更進一步了解 Spring Boot 結合 Redis 的使用方式。此次實作預計做一個計分器，我們將設計一個
+            API 接口，任何人都可以透過此支 API 將積分累加。
+        </h5>
+        </p>
+
+        <p class="lead">
+            <b>
+                首先在 Service 內定義數字增量的方法：
+            </b><br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @Service("RedisOperatorService")
+        public class RedisOperatorService {
+
+            private RedisTemplate redisTemplate;
+
+            private static final String REDIS_INCR_KEY = "incrKey";
+
+            RedisOperatorService(RedisTemplate redisTemplate) {
+                this.redisTemplate = redisTemplate;
+            }
+
+            public void incr(int score) {
+                try {
+                    int currentValue = 0;
+                    Object object = redisTemplate.opsForValue().get(REDIS_INCR_KEY);
+                    if (object == null) {
+                        currentValue = add(currentValue, score);
+                    } else {
+                        currentValue = add(Integer.valueOf(object.toString()), score);
+                    }
+                    redisTemplate.opsForValue().set(REDIS_INCR_KEY, String.valueOf(currentValue));
+                    logger.info("currentValue = " + currentValue);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to increment value in Redis", e);
+                }
+            }
+
+            public int add(int a, int b) {
+                return a + b;
+            }
+        }
+        </code>
+        </pre>
+        定義了一個變數
+        <code>
+            REDIS_INCR_KEY
+        </code>
+        其值為
+        <code>
+            incrKey
+        </code>
+        用於取得存於 Redis 內的指定資料。並透過建構式注入方式將
+        <code>
+            RedisTemplate
+        </code>
+        注入到 RedisOperatorService 內用於操作Redis。另外，定義了一個
+        <code>
+            incr()
+        </code> 方法，在該方法中我們透過呼叫
+        <code>
+            add()
+        </code>
+        方法將 API 傳入的值與 Redis 內的值相加後再存回 Redis 內。
+        </p>
+
+        <p class="lead">
+            在 Controller 中定義一個API接口如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @RequestMapping(value = "/increment", method = {RequestMethod.POST})
+        @ResponseBody
+        public void incrementSerialNumber() {
+
+            redisOperatorService.incr();
+
+        }
+        </code>
+        </pre>
+        我們可以透過此支 API 將 Redis 內的資料進行遞增的動作。
+        </p>
+
+        <p class="lead">
+            這次的測試會使用 JMeter 進行操作，它是一個開源的壓力測試工具，主要用於測試 API 的性能和負荷量。日後有機會的話會再進行介紹，大家可以先
+            Google JMeter 並下載以利接下來的測試使用。完成安裝後，如果看不習慣英文介面，可以透過左上角的 ”選項” 自行調整介面語言。
+        </p>
+
+        <p class="lead">
+            我們可以在計畫內增加一個執行緒群組用於此次的測試，如附圖所示：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-2.jpg" width="80%"><br>
+            <br>
+        </p>
+
+        <p class="lead">
+            接著於執行緒群組內新增HTTP請求，如附圖所示：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-3.jpg" width="80%"><br>
+            <br>
+        </p>
+
+        <p class="lead">
+            我們可以在HTTP請求內設定 API 的路徑以及 API 的方法，並設定每次請求要累加值為多少，假設目前每次發請求都固定累加的值
+            10，如附圖所示：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-4.jpg" width="80%"><br>
+            <br>
+        </p>
+
+        <p class="lead">
+            在執行緒群組的部分可以設定這個執行緒存組總共要執行幾次，如附圖所示：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-5.jpg" width="80%"><br>
+            假設我們目前的執行緒群組設定的執行緒數量為 100 且群組內定義了一個HTTP請求，則表示該請求會執行 100 次。<br>
+            <br>
+        </p>
+
+        <p class="lead">
+            實際執行後，可以透過 Redis 的 GUI 工具來查詢 指定 Key 的值目前為何，如附圖所示：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-6.jpg" width="80%"><br>
+            因為在 application.properties 內設定的資料庫為 1 ，所以需要到編號為 1 的資料庫下查看資料。從上圖會發現不論是
+            Key 或是 Value 明明在 set 資料時都是以字串的方式儲存，但為甚麼透過 Redis GUI 工具查看時會是不可讀的字串呢 ?
+            這可能是因為程式在將資料存至 Redis 時使用了 Java
+            默認的序列化方式(JdkSerializationRedisSerializer)，導致儲存的資料不是以純字串的方式呈現。<br>
+            儘管如此，我們還是可以透過一些簡單的方式來確認目前 Redis 特定鍵的值為何，例如再寫一支查詢 API：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        public String query(String key) {
+            Object object = redisTemplate.opsForValue().get(key);
+            return object.toString();
+        }
+        </code>
+        </pre>
+        我們可以透過
+        <code>
+            get()
+        </code>
+        方法並指定 Key 來進行查詢。並於 Controller 中定義一個查詢的 API接口：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @RequestMapping(value = "/query", method = {RequestMethod.POST})
+        @ResponseBody
+        public String queryScore(
+                @RequestParam String key
+        ) {
+            String result = redisOperatorService.query(key);
+
+            return "目前累積分數 : " + result;
+
+        }
+        </code>
+        </pre>
+        <br>
+        </p>
+
+        <p class="lead">
+            透過 Postman 的查詢結果如下：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-7.jpg" width="80%"><br>
+            根據壓測的設定，我們預期 incrKey 內的值應為 1,000 (10 * 100次)，但透過 GUI 工具來檢視後發現與我們預想的結果不同，為甚麼會是這樣的結果呢？<br>
+            這又要回到 Day23 我們在探討鎖的概念和目的時有提到的一個重點 -
+            鎖的目的在於當多執行緒同時訪問某一個資源時，防止資料發生不一致或衝突。在上述範例中並未實踐鎖的機制，顯而易見的遇到了資料不一致的問題。<br>
+            我們該如何解決這個問題呢？<br>
+            在探討鎖時也有提到可於程式內加鎖，例如透過 Java 原生的
+            <code>
+                synchronized
+            </code>
+            方法，這是一個最簡單也是最常用的加鎖方式，它可以應用於方法或是程式內的某個區塊，確保同一時間只有一個執行緒可以進入被鎖定的區域。調整後的方法如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        public synchronized void incr(int score) {
+            try {
+                int currentValue = 0;
+                Object object = redisTemplate.opsForValue().get(REDIS_INCR_KEY);
+                if (object == null) {
+                    currentValue = add(currentValue, score);
+                } else {
+                    currentValue = add(Integer.valueOf(object.toString()), score);
+                }
+                redisTemplate.opsForValue().set(REDIS_INCR_KEY, String.valueOf(currentValue));
+                logger.info("currentValue = " + currentValue);
+
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to increment value in Redis", e);
+            }
+        }
+        </code>
+        </pre>
+        </p>
+
+        <p class="lead">
+            調整後，透過原本 JMeter 執行100次 API 請求再查詢一次結果如下：<br>
+            <img src="https://yih-chen.github.io/images/iThome/ithome2024-D29-8.jpg" width="80%"><br>
+            此方法似乎確實解決了同步問題，但假設程式如果被分散在多個節點或容器時，程式內的鎖就沒辦法確保跨節點存取資源的資料一致性。
+            舉例來說，我們把這次實作的程式碼內容寫到了另一個專案內，並且同時對兩支程式進行大量的
+            API 請求，因為這兩支程式都會向 Redis
+            內的同個資料進行存取，所以可能又會引發相同的問題。如果真的想要杜絕此問題的發生，需要引入分散式鎖，這種鎖可以於多個應用程式服務間協調資源的訪問，確保資料的一致性。
+        </p>
+
+        <p class="lead">
+            如果想要實作分散式鎖的功能，我們需要先於 pom.xml 內引入依賴項目：<br>
+        <pre class="prettyprint lang-xml">
+        <code>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;redisson-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;&lt;!-- 請自行選擇適用版本 --&gt;&lt;/version&gt;
+        &lt;/dependency&gt;
+        </code>
+        </pre>
+        Redisson 是一個 Redis 的函式庫，它不只提供了與 Redis 的基本操作功能，還提供了一些擴充功能(例如分散式鎖)，使得分散式應用系統在使用Redis
+        上更方便、更powerful。
+        </p>
+
+        <p class="lead">
+            使用 Redisson 實現分散式鎖的方法如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        public void incr(int score) {
+            RLock rLock = redissonClient.getFairLock("redissonIncrFairKey");
+            try {
+                boolean isLocked = rLock.tryLock(15, 10, TimeUnit.SECONDS);
+                if (isLocked) {
+                    try {
+                        int currentValue = 0;
+                        Object object = redisTemplate.opsForValue().get(REDIS_INCR_KEY);
+                        if (object == null) {
+                            currentValue = add(currentValue, score);
+                        } else {
+                            currentValue = add(Integer.valueOf(object.toString()), score);
+                        }
+                        redisTemplate.opsForValue().set(REDIS_INCR_KEY, String.valueOf(currentValue));
+                        logger.info("currentValue = " + currentValue);
+                    } finally {
+                        rLock.unlock();
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to increment value in Redis", e);
+            }
+        }
+        </code>
+        </pre>
+        使用 RedissonClient 取一把名為 “redissonIncrFairKey” 的公平鎖，可以想像成這把鎖在 Redis 中是唯一的名稱，當應用程式成功取得鎖後，才可以對
+        Redis 指定鍵值的資料進行存取。<br>
+        透過
+        <code>
+            tryLock()
+        </code>
+        方法嘗試獲得鎖，並嘗試在指定的時間內取得鎖以及設定成功取得鎖後多久要釋放鎖(可持有鎖的時間)。
+        成功獲取鎖後，我們可以進行相應的資料操作，並在完成後確保鎖有被釋放。
+        </p>
+
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

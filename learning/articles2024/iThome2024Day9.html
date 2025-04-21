@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day9 - 淺談Bean
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-09-23</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            Bean 代表的是由 IoC 容器(IoC Container)管理的Java物件，這些物件構成了程式的邏輯，並且在整個專案中，可以被不同的
+            Class 分享&使用。
+        </p>
+
+        <p class="lead">
+            在Spring的 IoC 容器中，它可以管理一至多個 Bean<br>
+            在Spring中，我們有幾種方式可以配置 Spring Bean：
+        <ul>
+            <li>
+                基於XML檔案的配置，這在Spring中是比較傳統的配置方式，官方的範例如下：
+            </li>
+            <pre class="prettyprint lang-java">
+            <code>
+            &lt;bean id="userManager" class="com.stuff.UserManager"&gt;
+                &lt;property name="userPreferences" ref="userPreferences"/&gt;
+            &lt;/bean&gt;
+            </code>
+            </pre>
+            <p>
+                <code>
+                    &lt;bean&gt;
+                </code>元素定義了需要被Spring IoC 容器管理的 Bean，可以透過id標籤去指定它是屬於哪個類別(Class)<br>
+                <code>
+                    &lt;property&gt;
+                </code>元素可以設定Bean的屬性，ref標籤來指定另一個Bean的依賴關係
+            </p>
+            <li>
+                基於註解(Annotation)的配置，Spring 提供了一些註解(
+                <code>
+                    @Component、 @Service 、@Controller、@Repository
+                </code>
+                …等，後續會再一一介紹)，它允許使用註解來標註類別(Class)並讓他們自動註冊為Bean。
+                而我們可以透過在需要使用依賴的類別中加入
+                <code>
+                    @Autowired
+                </code>註解，自動注入依賴。<br>
+                但在使用基於註解的配置時，通常需要在配置類或 XML 配置中啟用Bean的掃描，如果沒有這麼做的話，Spring IoC
+                容器無法自動發現也無法使用註解標註的Bean，造成這些Bean無法被注入，也無法透過Spring IoC 容器進行管理。<br>
+                基於註解的配置的範例如下：
+                <pre class="prettyprint lang-java">
+                <code>
+                @Service
+                public class UserService {
+
+                    // 加入方法...
+                }
+                </code>
+                </pre>
+                <pre class="prettyprint lang-java">
+                <code>
+                @Controller
+                public class UserController {
+
+                    // 加入方法...
+                }
+                </code>
+                </pre>
+                <p>後續會再逐一介紹各個Bean的使用方式</p>
+            </li>
+            <li>
+                基於Java的配置，如果想要使用基於Java的配置，就得先認識
+                <code>@Bean</code>和
+                <code>@Configuration</code>
+                這兩個Bean。<br>
+                基於Java的配置範例如下：
+                <pre class="prettyprint lang-java">
+                <code>
+                @Configuration
+                @ComponentScan(basePackages = "com.example")
+                public class ApplicationConfig {
+
+                    @Bean
+                    public MyService myService() {
+                        return new MyService();
+                    }
+
+                    @Bean
+                    public MyRepository myRepository() {
+                        return new MyRepository();
+                    }
+                }
+                </code>
+                </pre>
+                <code>@Bean</code>註解主要是用來將一個方法實體化，這個方式與使用XML檔案配置中&lt;bean&gt;元素設定的方式相同。<br>
+                <code>@Configuration</code>註解通常會使用在類別上，表示這個類的方法創建時，應由Spring IoC的容器進行管理。<br>
+                <code>@ComponentScan</code>註解用於告訴Spring讓它自動掃描指定路徑下是否包含了其他註解(例如：
+                <code>@Service、@Controller、@Repository</code>…等)，它會將他們註冊成為Bean，並讓Spring IoC 容器進行管理。
+            </li>
+        </ul>
+        </p>
+
+        <p>
+            Spring 框架的核心在於透過 IoC 容器來管理 Bean，從而實現 IoC 和 DI 的功能。
+            如果沒有 Bean，Spring 容器就失去了管理對象的核心元素，自然也無法實現 IoC 和 DI 這些設計模式。
+        </p>
+
+        <p>
+            <b>沒有 Bean，就沒有 IoC 和 DI</b>
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

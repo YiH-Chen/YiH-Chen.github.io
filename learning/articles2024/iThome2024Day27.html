@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day27 - Spring Boot 整合 RabbitMQ(下)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-11</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            昨天介紹了 RabbitMQ的基本概念以及幾種應用模式，如果想要於 Spring Boot 中使用 RabbitMQ 並實作 RabbitMQ
+            中的幾種應用模式，需先完成以下配置：<br>
+        </p>
+
+        <p class="lead">
+            <b>
+                Step 1. 於 pom.xml 內加入 RabbitMQ 的依賴項目
+            </b><br>
+        <pre class="prettyprint lang-xml">
+        <code>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;
+            &lt;version&gt;&lt;!-- 請自行選擇適用版本 --&gt;&lt;/version&gt;
+        &lt;/dependency&gt;
+        </code>
+        </pre>
+        Spring AMQP 是由 Spring 框架提供的一個項目，用於基於AMQP的訊息傳遞方案的開發。
+        Spring AMQP 中提供了一個模組，幫助開發人員更輕鬆的實現訊息的發送、接收等行為。
+        </p>
+
+        <p class="lead">
+            <b>
+                Step 2. 於 application.properties 內設定 RabbitMQ Server 的連接方式
+            </b><br>
+        <pre class="prettyprint lang-java">
+        <code>
+        spring.rabbitmq.host = localhost
+        spring.rabbitmq.port = 5672
+        spring.rabbitmq.username = guest
+        spring.rabbitmq.password = guest
+        </code>
+        </pre>
+        在 Spring Boot 專案中連接 RabbitMQ Server 時使用的 port 為 5672(這是AMQP默認的通訊埠號)。
+        </p>
+
+        <p class="lead">
+            <b>
+                Step 3. 建立一個RabbitMQ相關設定的類別
+            </b><br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @Configuration
+        public class RabbitmqConfig {
+
+            private final static String QUEUE_NAME = "testQueue";
+
+            @Bean
+            public Queue testQueue(){
+                return new Queue(QUEUE_NAME);
+            }
+
+        }
+        </code>
+        </pre>
+        <code>
+            @Configuration
+        </code>
+        註解用於標註此類別為Spring的配置類，裡面包含一個或多個使用
+        <code>
+            @Bean
+        </code>
+        註解的方法，用於定義指定的訊息佇列(Queue)、交換器(Exchange)，並將他們納入Spring IoC 容器內進行管理。
+        </p>
+
+        <p class="lead">
+        <h5>
+            <b>實作範例</b>
+        </h5>
+        在完成一系列設定後，先建立一個發送訊息的類別如下：
+        <pre class="prettyprint lang-java">
+        <code>
+        @Component
+        public class Sender {
+
+            @Autowired
+            private RabbitTemplate rabbitmqTemplate;
+
+            public void sendQueue(String message) {
+
+                rabbitmqTemplate.convertAndSend("testQueue", message);
+
+            }
+
+        }
+        </code>
+        </pre>
+        <code>
+            RabbitTemplate
+        </code>
+        類別內提供了許多的方法用來發送和接收訊息，例如範例中的
+        <code>
+            convertAndSend
+        </code>
+        方法就是負責發送訊息的方法。<br>
+        <br>
+        接著我們可以在 @Server 類別下建立一個監聽訊息的方法如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @RabbitListener(queues = "testQueue")
+        public void processMessage(String message) {
+
+            logger.info("Get a message !!");
+
+            System.out.println(" [X] Received '" + message + "'");
+
+        }
+        </code>
+        </pre>
+        <code>
+            @RabbitListener
+        </code>
+        是一個用於監聽指定Queue的註解，當收到訊息(message)時，會主動呼叫方法處理收到的訊息。<br>
+        <br>
+        可以寫一個簡單的測試類用於測試訊息的發送和接收，測試程式如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @SpringBootTest
+        @ExtendWith(MockitoExtension.class)
+        class RabbitmqTest {
+
+            @Autowired
+            private Sender sender;
+
+            @Test
+            public void simpleTest(){
+
+                sender.sendQueue("Hello World !!");
+
+            }
+
+        }
+        </code>
+        </pre>
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

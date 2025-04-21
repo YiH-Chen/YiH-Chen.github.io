@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day20 - Spring 中的事務(上)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-04</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            你是否曾經遇到這樣的情況：當你正在將資料寫入資料庫時，由於某個欄位的值不正確，導致整筆資料無法成功寫入。
+            如果你有過這樣的經歷，那麼恭喜你，你已經接觸過事務的概念了。<br>
+            用這樣的舉例，或許會讓有意點點資料庫操作經驗的人更能體會”事務”。
+        </p>
+
+        <p class="lead">
+            事務 (Transaction) 在資料庫中是指一個邏輯工作單元，它主要目的在做什麼呢？<br>
+            簡單來說，事務的主要目的是確保資料庫操作 (CRUD) 的完整性和一致性，確保所有操作要麼全部成功要麼全部
+            RollBack，避免資料處於不一致的狀態。
+        </p>
+
+        <p class="lead">
+            它包含了一系列的操作，它包含了以下4個特性(俗稱 ACID)：<br>
+        <ul>
+            <li>
+                原子性(Atomicity)，這個概念源自於原子的物理概念，它在希臘語中代表著不可分割的概念(有空可以去看看原子論)，後人把這樣的想法延伸到了電腦科學上。
+                事務中包含的操作被視為一個邏輯工作單元，在這個邏輯工作單元的操作，要麼全部成功，要麼全部失敗，不會有成功失敗各半等的狀況。
+            </li>
+            <li>
+                一致性(Consistency)，它確保了資料庫中的資料自始自終都符合資料庫定義的規則和約束條件。
+                當事務執行前、執行中或是執行後，無論事務最後是成功或是失敗，都不會違反資料庫的約束和規則。<br>
+                舉例來說，今天有個欄位屬性值被設定為整數，如果有個事務執行過程中的操作欲將一字串插入該欄位中，因為不符合約束，事務會被回滾。
+            </li>
+            <li>
+                隔離性(Isolation)，它確保了多個事務同時對一個資料執行操作時不會互相干擾，這樣可以避免事務在執行的過程中讀到不一致的資料(之後會再利用一篇文章介紹事務隔離的層級)。
+            </li>
+            <li>
+                持久性(Durability)，它確保了資料的永久性，一旦事務成功結束，它對資料庫中資料的更動就會被永久的保存下來。<br>
+                假設你今天成功的將資料寫入了資料庫中，且系統提示保存成功。就算之後突然發生電腦斷電或系統崩潰等情況。在系統修復後重新開啟資料庫，你先前保存的資料仍然會存在，因為資料庫已確保該筆資料被永久寫入。
+            </li>
+        </ul>
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

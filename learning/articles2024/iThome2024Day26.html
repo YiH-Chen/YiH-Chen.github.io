@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day26 - Spring Boot 整合 RabbitMQ(上)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-10</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            RabbitMQ 是一個開源的訊息代理軟體，它使用了高級訊息佇列協定(Advanced Message Queuing Protocol,
+            AMQP)，Client端可透過此協定與RabbitMQ傳遞訊息且不受不同的應用程式、不同的開發語言等條件的限制。它也常被用於分散式系統架構中。
+        </p>
+
+        <p class="lead">
+            在RabbitMQ內包含幾個重要的角色：<br>
+        <ol>
+            <li>
+                <b>生產者（Producer）</b>
+                ，即為訊息的產生者，會負責將訊息傳送至Queue中。
+            </li>
+            <li>
+                <b>消費者（Consumer）</b>
+                ，訊息的消費者，負責接收Queue中的訊息。
+            </li>
+            <li>
+                <b>訊息佇列（Queue）</b>
+                ，負責存放訊息的空間，具有先進先出（FIFO）的概念。
+            </li>
+            <li>
+                <b>交換器（Exchange）</b>
+                ，可以把Exchange當作路由器的概念，它可以決定Producer的訊息需要送往哪一個Queue。主要有四種模式：<br>
+                <ul>
+                    <li>
+                        <b>direct模式</b>
+                        ，可以直接將訊息丟給指定的Queue。
+                    </li>
+                    <li>
+                        <b>topic模式</b>
+                        ，主題的概念，透過Binding規則，將訊息傳送給指定的Queue。
+                    </li>
+                    <li>
+                        <b>header模式</b>
+                        ，藉由傳送資料的Header來指定訊息要送往的Queue。
+                    </li>
+                    <li>
+                        <b>fanout模式</b>
+                        ，將訊息轉發給所有綁定到Exchange的Queue中。
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <b>綁定（Binding）</b>
+                ，搭配Exchange使用，可以讓Exchange綁定一些指定的Queue，從而知道Producer的訊息要送往何處。
+            </li>
+        </ol>
+        以下圖
+        <b>郵寄的例子</b>
+        來說明，或許會稍微貼切一些：<br>
+        <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-1.jpg" width="80%">
+        <br>
+        日常生活中不免會遇到需要進行郵寄信件或包裹等業務，需要使用郵寄服務的寄件者會帶著包裹或信件至郵局進行投遞。
+        此時，郵局內部的人員可能會根據寄件者留下的
+        <b>收件地址</b>
+        （例如：收件地址位在中山區）將包裹或信件分派至該區域的郵局，最後透過分局將包裹或信件交付收件者。<br>
+        </p>
+
+        <p></p>
+
+
+        <h3>
+            <b>
+                RabbitMQ運行的種類/模式
+            </b>
+        </h3>
+
+        <p class="lead">
+        <ol>
+            <li>
+                <b>Simple模式</b><br>
+                <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-2.jpg" width="80%"><br>
+                這是RabbitMQ中最簡單的模式，Producer,Consumer,Queue都只有一個。透過Producer直接將message傳進Queue中，最後由Consumer接收Queue中的訊息。
+            </li>
+            <li>
+                <b>Worker模式</b><br>
+                <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-3.jpg" width="80%"><br>
+                由於Queue遵循先進先出演算法（FIFO）的概念，當Producer發送訊息的速度大於Consumer處理(消化)的速度時，這時simple模式如果被使用在
+                <b>
+                    有時間限制的應用
+                </b>
+                上，就可會因為等待時間過長而導致任務失敗。<br>
+                相比Simple模式，Worker模式就能更有效的消化Queue中的訊息。Worker模式會有兩個以上的Consumer，同時從一個Queue中取出訊息，並且
+                <b>
+                    兩者不會取出重複的訊息
+                </b>
+                。在默認情況下，RabbitMQ會以循環的方式，按照順序將訊息平均發送給每個Consumer。<br>
+                <b>
+                    以生活中的例子來說
+                </b>
+                ，就像是大賣場中的收銀台，此時只有一個櫃員提供結帳服務，當越來越多顧客在排隊等候結帳時，櫃員就需要花更多時間消化掉這些顧客，而顧客也需要花更久的時間進行等待。
+                這時候賣場如果能夠加開多個櫃台提供結帳服務，就能夠更快速的處理這些顧客的結帳需求。
+            </li>
+            <li>
+                <b>Publish/Subscribe模式</b><br>
+                <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-4.jpg" width="80%"><br>
+                與Work模式相比，多了交換機（Exchange）的機制，Producer會先將訊息交由交換機，再透過交換機將訊息傳送至指定的Queue中。<br>
+                交換機的模式承如先前介紹，包含了四種模式/類型（
+                <b>
+                    direct, topic, headers, fanout
+                </b>
+                ）。<br>
+                Exchange只負責轉發訊息而不具有儲存的功能，所以如果沒有任何的Queue與Exchange綁定，那訊息會遺失。<br>
+                比起前面所述的幾種模式，Publish/Subscribe模式類似於生活中的廣播/訂閱。在日常生活中，我們可能會訂閱一些Youtube頻道或新聞媒體等，
+                當該頻道發出新影片時，有訂閱的人就會收到上片通知，反之，沒有訂閱的人就不會收到消息。
+            </li>
+            <li>
+                <b>Routing模式</b><br>
+                <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-5.jpg" width="80%"><br>
+                routing模式同樣也使用到Exchange，當Producer要將訊息交由交換機轉發時，需要在訊息上帶入一把RoutingKey，而Exchange會比對
+                Queue的RoutingKey是否與訊息的RoutingKey一致，如果完全一致，交換機才會將訊息轉送至該Queue中。<br>
+                此外，routing模式具有多重綁定的功能，也就是說同一把Key可以綁到n個Queue中，而非一對一綁定。
+            </li>
+            <li>
+                <b>Topics模式</b><br>
+                <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-6.jpg" width="80%"><br>
+                Topics模式也是Routing模式的一種，只是它的RoutingKey是採用
+                <b>萬用字元的方式</b>
+                與Queue進行匹配。另外，這種模式下交換機可以用
+                <b>模糊匹配的方式</b>
+                匹配到對應的Queue，再由監聽該Queue
+                的 Consumer 去消化裡面的訊息。
+            </li>
+            <li>
+                <b>RPC模式</b><br>
+                <img src="https://yih-chen.github.io/images/iThome/ithome2024-D26-7.jpg" width="80%"><br>
+                就是透過Queue來實現遠端過程呼叫，Client端可以將定義好的訊息送至Queue中，再由Server端處理Queue中的訊息。
+                Client端為了獲得Server端處理後的結果，Client端會在向Server發送請求時，同時發送一個回調佇列（Callback
+                queue）的地址（reply_to）， 用於告訴Server端，當處理完時該送回何處。<br>
+                在RPC模式下，Client端也可以同時發送多個訊息請求Server端進行處理。當Server端處理完後，為了讓Client端可以識別出Server端給予的回應，
+                Client端在發送請求時，會附帶一個獨有的Correlation id，如此一來，Client端在回調佇列中就可以根據Correlation
+                id辨識出這個回應是來自哪一個請求。
+            </li>
+        </ol>
+
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

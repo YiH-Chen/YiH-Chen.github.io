@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+
+        thead th {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            width: 25%;
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day21 - Spring 中的事務(中)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-05</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            昨日介紹了事務的4個特性，其中的隔離性(Isolation)，在處理高併發系統時是非常重要的。
+            它確保了多個事務在同時運行時能夠互不干擾，從而避免發生資料不一致的狀況。<br>
+            它能夠防止發生以下資料讀取問題：<br>
+        <ul>
+            <li>
+                <b>
+                    髒讀（Dirty Read）
+                </b>
+                ，意旨一個事務正在存取資料，並對資料進行了修改，而在修改還沒有被提交(Commit)到資料庫的同時，另一個事務讀取了尚未提交的資料，
+                假設事務最後回滾了，那麼讀到的資料會是錯誤的。<br>
+                假設事務A正在存取資料但尚未提交，事務B讀到了事務A尚未提交的資料，如果事務A操作失敗RollBack後，事務B讀到的資料就會是有問題的。
+            </li>
+            <li>
+                <b>
+                    不可重複讀取（Non-repeatable Read）
+                </b>
+                ，表示一個事務在重複讀取兩次相同的資料時，會得到不一樣的結果。<br>
+                假設事務A正在讀取一筆資料，恰巧事務B也在讀取資料並且修改了資料內容也完成了提交，事務A再次讀取時發現資料與第一次讀取的結果不一致。
+            </li>
+            <li>
+                <b>
+                    幻讀（Phantom Read）
+                </b>
+                ，代表事務在查詢時，另一個事務新增或刪除了一筆資料，導致事務第二次查詢時多了一筆資料或是少了一筆資料。<br>
+                假設事務A透過指定條件查詢得到了10筆資料，事務B新增了一筆符合事務A查詢條件的資料，當事務A發起第二次查詢時得到了11筆資料。
+            </li>
+        </ul>
+        </p>
+
+        <p class="lead">
+            在標準SQL規範中定義了事務隔離的4個層級，根據效能最好但一致性最差到效能最差但一致性最好的排序如下：<br>
+        <ul>
+            <li>
+                <b>
+                    讀取未提交資料( Read Uncommitted )
+                </b>
+                ，這是最低等級的隔離層級，它允許事務讀取其他事務尚未提交的變更。在這種隔離層級下，髒讀、不可重複讀取、幻讀等問題都有可能發生。
+            </li>
+            <li>
+                <b>
+                    讀取提交資料( Read Committed )
+                </b>
+                ，此隔離層級保證了事務不會讀取到另一個事務已修改但尚未提交的資料內容。在這種隔離層級下可避免髒讀，但仍有機會發生不可重複讀取和幻讀的問題。
+            </li>
+            <li>
+                <b>
+                    可重複讀取( Repeatable Read )
+                </b>
+                ，可以確保事務在多次讀取同一筆資料的一致性，防止發生髒讀和不可重複讀取的問題。此層級無法阻止其他事務新增資料，所以仍可能發生幻讀的問題。
+            </li>
+            <li>
+                <b>
+                    序列化( Serializable )
+                </b>
+                ，隔離層級中的最高級別，徹底地避免了髒讀、不可重複讀取、幻讀的問題發生，所有事務會依照次序執行(猶如單一執行緒般)。
+                雖然此層級避免了所有併發讀取問題，但其犧牲的就是系統效能，因為所有事務都須一一排隊等待。
+            </li>
+        </ul>
+        </p>
+
+        <p>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">隔離層級</th>
+                <th scope="col">發生髒讀</th>
+                <th scope="col">可重複讀取</th>
+                <th scope="col">發生幻讀</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Read Uncommitted</th>
+                <td>是</td>
+                <td>是</td>
+                <td>是</td>
+            </tr>
+            <tr>
+                <th scope="row">Read Committed</th>
+                <td>否</td>
+                <td>是</td>
+                <td>是</td>
+            </tr>
+            <tr>
+                <th scope="row">Repeatable Read</th>
+                <td>否</td>
+                <td>否</td>
+                <td>是</td>
+            </tr>
+            <tr>
+                <th scope="row">Serializable </th>
+                <td>否</td>
+                <td>否</td>
+                <td>否</td>
+            </tr>
+            </tbody>
+        </table>
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

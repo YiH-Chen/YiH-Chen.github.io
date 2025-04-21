@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day28 - Spring Boot 整合 Redis(上)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-12</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            在非關聯式資料庫(NoSQL)中，Redis 是一個相當受歡迎的資料庫。除了可被作為資料庫使用外，也可作為快取。<br>
+            它的特點在於：<br>
+        <ul>
+            <li>提供了多樣的資料型態，字串(string)、雜湊(hash)、串列(list)、集合(set)、有序集合(zset , sorted
+                set)，可以根據應用場景的不同決定資料儲存的型態。
+            </li>
+            <li>
+                高性能，Redis是基於內存的資料庫，讀寫速度極快，通常每秒可超過數萬甚或數十萬次的操作，非常適合用於高吞吐量和延遲性低的應用。
+            </li>
+            <li>資料持久化，支援資料的持久化，可以定期將內存資料保存到磁碟中，或是將每一筆寫操作命令以日誌(Log)的形式記錄下來(Append-Only
+                File, AOF)。
+            </li>
+            <li>支援主從複製(Master-Slave
+                Replication)，可以將資料的讀寫分離，讓所有的寫入/更新由主資料庫(Master)執行，讀取相關的操作則由從資料庫(Slave)執行。
+            </li>
+            <li>支援多程式語言的Client端，支援包含Java、Python、C#等程式語言。</li>
+            <li>功能多樣，支援訂閱/發佈(publish/subscribe)、Lua script、發送通知等功能。</li>
+        </ul>
+        </p>
+
+        <p class="lead">
+            Redis常見的應用場景：<br>
+        <ul>
+            <li>
+                <b>快取</b>
+                ，經常需要被查詢，但很少需要被修改或刪除的資料可以使用Redis來快取，減少存取的延遲。
+            </li>
+            <li>
+                <b>計數器</b>
+                ，統計網頁的總瀏覽次數、按讚數等應用。確保在高併發環境中資料的一致性
+            </li>
+            <li>
+                <b>佇列</b>
+                ，可以充當訊息代理軟體，實現基本的佇列功能，但沒辦法確保訊息被成功處理，故訊息有可能遺失。
+            </li>
+            <li>
+                <b>即時排行榜</b>
+                ，可以透過Redis內的sorted set將資料進行排序。
+            </li>
+        </ul>
+        </p>
+
+        <p class="lead">
+            Redis 原本是一個開源的軟體，可惜於今年3月時官方變更了授權條款，從原本開源的 BSD(Berkeley Software
+            Distribution) 授權條款改為 RSALv2（Redis Source Available License）與 SSPLv1（Server Side Public
+            License）雙重授權。據悉其主要目的是限制雲服務供應商不可免費使用 Redis來發展競爭產品。
+        </p>
+
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

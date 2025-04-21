@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day22 - Spring 中的事務(下)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-06</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            在 Spring 中，我們可以透過
+            <code>
+                @Transactional
+            </code>
+            註解來啟用事務，此註解通常被用在方法或是類別上。<br>
+            當類別上使用
+            <code>
+                @Transactional
+            </code>
+            註解時，代表該類別和子類別的所有方法都設定為相同的事務屬性。
+            如果在類別和方法上都使用了
+            <code>
+                @Transactional
+            </code>
+            註解，方法使用的事務屬性會覆蓋類別所用的事務屬性。
+            當某個方法或是類別使用了
+            <code>
+                @Transactional
+            </code>
+            ，Spring 會自動幫助該方法或類別在資料庫操作時進行事務管理，確保符合ACID特性。
+        </p>
+
+        <p class="lead">
+            <code>
+                @Transactional
+            </code>
+            中常用的屬性有：<br>
+        <ol>
+            <li>
+                isolation：用於設定事務的隔離層級，控制多個事務執行時是否允許髒讀、重複讀取、幻讀等狀況。支援的層級如下：
+                <ul>
+                    <li>
+                        <code>
+                            Isolation.READ_UNCOMMITTED
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            Isolation.READ_COMMITTED
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            Isolation.REPEATABLE_READ
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            Isolation.SERIALIZABLE
+                        </code>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                propagation：用於設定事務傳播的類型，用於控制事務方法要如何與現有的事務進行互動(預設為
+                <code>
+                    Propagation.REQUIRED
+                </code>
+                )。
+            </li>
+            <li>
+                readOnly：是否唯讀，如果 readOnly 值為 true，代表該事務只進行查詢操作，並不涉及資料的修改(預設為 false)。
+            </li>
+            <li>
+                timeout：事務逾時時間的設定，以秒為單位，假設事務執行的時間超過設定的時間，事務會自動回滾。
+            </li>
+            <li>
+                rollbackFor：當事務執行發生例外狀況時，事務會回滾
+            </li>
+            <li>
+                noRollbackFor：當事務執行發生例外狀況時，事務不會回滾
+            </li>
+        </ol>
+        </p>
+
+
+        <p class="lead">
+            在方法上加入@Transactional 註解的範例如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+            @Transactional(isolation = Isolation.REPEATABLE_READ, timeout = 30, rollbackFor = Exception.class)
+            public int saveStudentScores(String serialNumber, StudentScore studentScore){
+
+                StudentInformation studentInformation = studentInformationRepository.getStudentBySerialNumber(serialNumber);
+
+                if(studentInformation != null){
+                    StudentScores ss = new StudentScores();
+                    ss.setSsSiId(studentInformation.getSiId());
+                    ss.setSsExamId(studentScore.getExamId());
+                    ss.setSsSubject(studentScore.getSubject());
+                    ss.setSsScore(studentScore.getScore());
+
+                    studentScoresRepository.saveAndFlush(ss);
+                    return 0;
+                }
+                return 1;
+            }
+        </code>
+        </pre>
+        我將
+        <a href="iThome2024Day19.html">Day19 </a>
+        文章中新增學生考試成績的方法加上了
+        <code>
+            @Transactional
+        </code>
+        註解，設置的隔離級別為
+        <code>
+            Isolation.REPEATABLE_READ
+        </code>
+        用於確保讀取資料的一致性，並設定了事務執行的時間為30秒，如果超過則會觸發超時，事務會回滾。
+        此外，還設置了
+        <code>
+            rollbackFor
+        </code>
+        屬性，當 Spring 捕獲到任何 Exception時，事務會回滾。
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

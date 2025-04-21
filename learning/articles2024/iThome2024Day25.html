@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Yi-Hong's Blog</title>
+    <link rel="icon" type="image/x-icon" href="https://yih-chen.github.io/images/yh.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://yih-chen.github.io/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Yi-Hong Chen</span>
+        <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
+                                             src="https://yih-chen.github.io/images/learn.jpg" alt="..."/></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+</nav>
+
+<div class="nav-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-9 col-lg-3">
+                <div class="site-branding">
+                    <h1 class="site-title"><a href="https://yih-chen.github.io/index.html" rel="home"></a></h1>
+                </div><!-- .site-branding -->
+            </div><!-- .col -->
+
+            <div class="col-3 col-lg-9 flex justify-content-end align-content-center">
+                <nav class="site-navigation flex justify-content-end align-items-center">
+                    <ul class="flex flex-column flex-lg-row justify-content-lg-end align-content-center">
+                        <li><a href="https://yih-chen.github.io/index.html">首頁</a></li>
+                        <li><a href="https://yih-chen.github.io/about.html">關於我</a></li>
+                        <li class="current-menu-item"><a href="https://yih-chen.github.io/learning/learningindex.html">學習紀錄</a>
+                        </li>
+                        <li><a href="https://yih-chen.github.io/life/index.html">生活紀錄</a></li>
+                    </ul>
+
+                    <div class="hamburger-menu d-lg-none">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div><!-- .hamburger-menu -->
+
+                    <div class="header-bar-cart">
+                        <a href="#" class="flex justify-content-center align-items-center"><span aria-hidden="true"
+                                                                                                 class="icon_bag_alt"></span></a>
+                    </div><!-- .header-bar-search -->
+                </nav><!-- .site-navigation -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div>
+
+<div class="container-fluid p-0 pr-150">
+    <div class="resume-section-content" align="center">
+        <h2 class="mb-0">
+            Day25 - JUnit單元測試(下)
+            <span class="text-primary"></span>
+        </h2>
+        <div class="subheading mb-5">
+            <span class="text-primary">2024-10-09</span>
+        </div>
+    </div>
+
+</div>
+<hr class="m-0"/>
+<div>
+    <div class="container-fluid p-0 pr-150 pr-320" style="width:55.589%;">
+
+        <p class="lead">
+            Mockito中常用的方法<br>
+        <ul>
+            <li>
+                <code>
+                when().thenReturn()
+                </code><br>
+                在測試方法中，when()用來指定測試的方法需要進行哪些動作，通常會先調用目標方法然後將返回值回傳給when()
+                (此步驟稱為打樁程序 Stub)<br>
+                此方法可以應用在需要呼叫外部API的測試方法中，測試方法可以呼叫目標方法然後給定一個預定的值。
+                <pre class="prettyprint lang-java">
+                <code>
+                when(目標方法).thenReturn(調用目標方法後自定義的返回值)
+                Mockito.when(studentService.getStudentScore(Mockito.anyString())).thenReturn(.getStudentScoreInfo());
+                </code>
+                </pre>
+            </li>
+            <li>
+                <code>
+                    doReturn().when()
+                </code><br>
+                和
+                <code>
+                    when().thenReturn()
+                </code>
+                的方法是類似的，但
+                <code>
+                    doReturn().when()
+                </code>
+                不會實際呼叫目標方法。<br>
+                舉例來說，使用
+                <code>
+                    when().thenReturn()
+                </code>
+                模擬呼叫外部API，假設找不到該API的子路徑，此方法可能會發生NullPointException，因為在
+                <code>
+                    when()
+                </code>
+                內實際呼叫了此方法。而
+                <code>
+                    doReturn().when()
+                </code>
+                則反之。
+            </li>
+        </ul>
+
+        </p>
+
+        <p class="lead">
+            小結：
+            <code>
+                when().thenReturn()
+            </code>
+            會實際呼叫目標方法(成功)後返回自定義值；
+            <code>
+                doReturn().when()
+            </code>
+            會自定義呼叫目標方法的返回值，但不會實際執行目標方法。
+        </p>
+
+        <p class="lead">
+        <ul>
+            <li>
+                <code>
+                    callRealMethod()
+                </code><br>
+                即使受測 Service 被 Mock 了，我們還是可以透過 callRealMethod 方法呼叫真實的方法並返回實際值。
+            </li>
+            <li>
+                <code>
+                    assertEquals(expected,actual)
+                </code><br>
+                用來驗證兩值是否相等。
+                <pre class="prettyprint lang-java">
+                <code>
+                assertEquals("預計結果","實際結果")
+                assertEquals("85",actualAverageScore)
+                </code>
+                </pre>
+            </li>
+        </ul>
+        <br>
+        </p>
+
+        <p></p>
+
+        <p class="lead">
+        <h5><b>實作範例</b></h5><br>
+        假設今天老師想要計算學生考試的平均成績，為此我們設計了一個 calculAverageScore 方法用於計算學生平均成績。
+        我們可以透過 Unit Test 的方式來驗證此方法的業務邏輯是否正確，不需要實際去取得資料庫中學生的分數。<br>
+        受測 Service 如下：<br>
+        <pre class="prettyprint lang-java">
+        <code>
+        @Service("StudentService")
+        public class StudentService {
+
+            private StudentInformationRepository studentInformationRepository;
+            private StudentScoresRepository studentScoresRepository;
+
+            @Autowired
+            public StudentService(StudentInformationRepository studentInformationRepository,
+                                  StudentScoresRepository studentScoresRepository) {
+                this.studentInformationRepository = studentInformationRepository;
+                this.studentScoresRepository = studentScoresRepository;
+            }
+
+            public float calculAverageScore(List&lt;StudentScores&gt; studentScoreList){
+
+                int totalScore = studentScoreList.stream()
+                        .mapToInt(studentScore -> Integer.parseInt(studentScore.getSsScore()))
+                        .sum();
+
+                return (float) totalScore / studentScoreList.size();
+            }
+        }
+        </code>
+        </pre>
+        Unit Test 如下：
+        <pre class="prettyprint lang-java">
+        <code>
+        @SpringBootTest
+        @ExtendWith(MockitoExtension.class)
+        class DemoApplicationTests {
+
+            @Spy
+            @InjectMocks
+            private StudentService studentService;
+
+            @BeforeEach
+            public void initMocks() {
+                MockitoAnnotations.openMocks(this);
+            }
+
+            @Test
+            public void calculAverageScoreTest(){
+
+                doReturn(getStudentScoresList()).when(studentService).getStudentScoresBySerialNumber(Mockito.anyString());
+
+                List&lt;StudentScores&gt; studentScoresList = studentService.getStudentScoresBySerialNumber("113A3G0006");
+                float actualAverageScore = studentService.calculAverageScore(studentScoresList);
+
+                float expectedAverage = (100 + 75 + 85) / studentScoresList.size();
+
+                // 進行 assert，檢查平均分數是否正確
+                assertEquals(expectedAverage, actualAverageScore, 1f); // 允許少量誤差
+
+            }
+
+            public List&lt;StudentScores&gt; getStudentScoresList(){
+
+                List&lt;StudentScores&gt; studentScoresList = new ArrayList<>();
+
+                studentScoresList.add(createStudentScore(115, "Math", "113-1", "100"));
+                studentScoresList.add(createStudentScore(115, "EnglishLanguage", "113-1", "75"));
+                studentScoresList.add(createStudentScore(115, "ChineseLanguage", "113-1", "85"));
+
+                return studentScoresList;
+            }
+
+            private StudentScores createStudentScore(int siId, String subject, String examId, String score) {
+                StudentScores studentScore = new StudentScores();
+                studentScore.setSsSiId(siId);
+                studentScore.setSsSubject(subject);
+                studentScore.setSsExamId(examId);
+                studentScore.setSsScore(score);
+                return studentScore;
+            }
+        }
+        </code>
+        </pre>
+        此支單元測試方法為了驗證 StudentService 中的 calculAverageScore 方法，為了不讓程式實際執行資料庫查詢操作，我們透過
+        getStudentScoresList 方法模擬學生的成績資料。
+        並藉由 doReturn 方法將 getStudentScoresList 方法內模擬的資料返回。<br>
+        assertEquals 中的第三個參數表示的是”允許的誤差範圍”，這對於處理浮點數資料的判斷比較重要。
+        </p>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
